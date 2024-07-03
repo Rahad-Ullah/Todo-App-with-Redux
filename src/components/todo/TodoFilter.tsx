@@ -1,7 +1,4 @@
-"use client";
-
-import * as React from "react";
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const TodoFilter = () => {
-  const [position, setPosition] = React.useState("bottom");
+  const [position, setPosition] = useState("high");
 
   return (
     <DropdownMenu>
@@ -28,7 +25,9 @@ const TodoFilter = () => {
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
           <DropdownMenuRadioItem value="high">High</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="moderate">Moderate</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="medium">
+            Medium
+          </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="low">Low</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
