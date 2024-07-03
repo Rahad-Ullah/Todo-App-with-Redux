@@ -18,16 +18,20 @@ import { addTodo } from "@/redux/features/todoSlice";
 const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
+    const randomString = Math.random().toString(36).substring(2, 7);
+
     const taskDetails = {
+      id: randomString,
       title: task,
       description,
-    }
-    
-    dispatch(addTodo(taskDetails))
+    };
+
+    dispatch(addTodo(taskDetails));
   };
 
   return (

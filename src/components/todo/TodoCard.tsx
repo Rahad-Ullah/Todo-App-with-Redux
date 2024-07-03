@@ -1,14 +1,42 @@
+import { useAppDispatch } from "@/redux/hook";
 import { Button } from "../ui/button";
+import { removeTodo, toggleComplete } from "@/redux/features/todoSlice";
 
-const TodoCard = () => {
+type TTodoCardProps = {
+  id: string;
+  title: string;
+  description: string;
+  isCompleted?: boolean;
+};
+
+const TodoCard = ({ title, description, id, isCompleted }: TTodoCardProps) => {
+  const dispatch = useAppDispatch();
+
+  const handleComplete = () => {
+    dispatch(toggleComplete(id));
+  };
+
   return (
     <div className="flex justify-between items-center bg-white p-3 rounded-md border">
-      <input type="checkbox" name="" id="" />
-      <h3 className="font-semibold">Todo Title</h3>
-      <p>Time</p>
-      <p>Description</p>
+      <input
+        onChange={handleComplete}
+        type="checkbox"
+        id="complete"
+        name="complete"
+        className="size-6"
+      />
+      <h3 className="font-semibold">{title}</h3>
+      {/* <p>Time</p> */}
+      <p>{description}</p>
+      <p className={`${isCompleted ? "text-green-500" : "text-red-500"}`}>
+        {isCompleted ? "Done" : "Pending"}
+      </p>
       <div className="space-x-5">
-        <Button variant={"destructive"} className="">
+        <Button
+          onClick={() => dispatch(removeTodo(id))}
+          variant={"destructive"}
+          className=""
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
