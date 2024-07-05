@@ -2,9 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 export type TTodo = {
-  id: string;
+  _id: string;
   title: string;
   description: string;
+  priority: string;
   isCompleted?: boolean;
 };
 
@@ -24,16 +25,18 @@ const todoSlice = createSlice({
       state.todos.push({ ...action.payload, isCompleted: false });
     },
     removeTodo: (state, action: PayloadAction<string>) => {
-      state.todos = state.todos.filter(item => item.id !== action.payload)
+      state.todos = state.todos.filter((item) => item._id !== action.payload);
     },
     toggleComplete: (state, action: PayloadAction<string>) => {
-      const task = state.todos.find(item => item.id === action.payload)
-      task!.isCompleted = !task?.isCompleted
-      const sortedTodos = state.todos.filter(item => item.id !== action.payload)
-      if(task && sortedTodos.length){
-        state.todos = [...sortedTodos, task]
+      const task = state.todos.find((item) => item._id === action.payload);
+      task!.isCompleted = !task?.isCompleted;
+      const sortedTodos = state.todos.filter(
+        (item) => item._id !== action.payload
+      );
+      if (task && sortedTodos.length) {
+        state.todos = [...sortedTodos, task];
       }
-    }
+    },
   },
 });
 

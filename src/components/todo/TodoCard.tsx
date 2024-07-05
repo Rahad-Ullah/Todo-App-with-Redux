@@ -1,19 +1,48 @@
-import { useAppDispatch } from "@/redux/hook";
+import { useUpdateTodoMutation } from "@/redux/api/api";
 import { Button } from "../ui/button";
-import { removeTodo, toggleComplete } from "@/redux/features/todoSlice";
+import { removeTodo } from "@/redux/features/todoSlice";
+import { useAppDispatch } from "@/redux/hook";
+import UpdateTodoModal from "./UpdateTodoModal";
 
 type TTodoCardProps = {
-  id: string;
+  _id: string;
   title: string;
   description: string;
+  priority: string;
   isCompleted?: boolean;
 };
 
-const TodoCard = ({ title, description, id, isCompleted }: TTodoCardProps) => {
+const TodoCard = ({
+  _id,
+  title,
+  description,
+  priority,
+  isCompleted,
+}: TTodoCardProps) => {
+  //? for local state
   const dispatch = useAppDispatch();
 
+  //? for server
+  const [updateTodo] = useUpdateTodoMutation();
+
+  // update todo status
   const handleComplete = () => {
-    dispatch(toggleComplete(id));
+    const todo = {
+      title,
+      description,
+      priority,
+      isCompleted: !isCompleted,
+    };
+    const todoData = {
+      id: _id,
+      todo,
+    };
+
+    //? for local state
+    // dispatch(toggleComplete(id));
+
+    //? for server
+    updateTodo(todoData);
   };
 
   return (
@@ -24,16 +53,17 @@ const TodoCard = ({ title, description, id, isCompleted }: TTodoCardProps) => {
         id="complete"
         name="complete"
         className="size-6"
+        defaultChecked={isCompleted}
       />
       <h3 className="font-semibold">{title}</h3>
-      {/* <p>Time</p> */}
+      <p>{priority}</p>
       <p>{description}</p>
       <p className={`${isCompleted ? "text-green-500" : "text-red-500"}`}>
         {isCompleted ? "Done" : "Pending"}
       </p>
       <div className="space-x-5">
         <Button
-          onClick={() => dispatch(removeTodo(id))}
+          onClick={() => dispatch(removeTodo(_id))}
           variant={"destructive"}
           className=""
         >
@@ -52,22 +82,12 @@ const TodoCard = ({ title, description, id, isCompleted }: TTodoCardProps) => {
             />
           </svg>
         </Button>
-        <Button variant={"default"} className="bg-[#5C53FE]">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-            />
-          </svg>
-        </Button>
+        <UpdateTodoModal
+          _id={_id}
+          title={title}
+          description={description}
+          priority={priority}
+        />
       </div>
     </div>
   );
