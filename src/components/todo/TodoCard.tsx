@@ -1,7 +1,5 @@
-import { useUpdateTodoMutation } from "@/redux/api/api";
+import { useDeleteTodoMutation, useUpdateTodoMutation } from "@/redux/api/api";
 import { Button } from "../ui/button";
-import { removeTodo } from "@/redux/features/todoSlice";
-import { useAppDispatch } from "@/redux/hook";
 import UpdateTodoModal from "./UpdateTodoModal";
 
 type TTodoCardProps = {
@@ -20,10 +18,11 @@ const TodoCard = ({
   isCompleted,
 }: TTodoCardProps) => {
   //? for local state
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   //? for server
   const [updateTodo] = useUpdateTodoMutation();
+  const [deleteTodo] = useDeleteTodoMutation()
 
   // update todo status
   const handleComplete = () => {
@@ -45,6 +44,10 @@ const TodoCard = ({
     updateTodo(todoData);
   };
 
+  const handleDeleteTodo = () => {
+    deleteTodo(_id)
+  }
+
   return (
     <div className="flex justify-between items-center bg-white p-3 rounded-md border">
       <input
@@ -63,7 +66,7 @@ const TodoCard = ({
       </p>
       <div className="space-x-5">
         <Button
-          onClick={() => dispatch(removeTodo(_id))}
+          onClick={handleDeleteTodo}
           variant={"destructive"}
           className=""
         >
