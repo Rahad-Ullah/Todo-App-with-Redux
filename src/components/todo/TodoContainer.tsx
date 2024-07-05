@@ -8,14 +8,12 @@ import { TTodo } from "@/redux/features/todoSlice";
 const TodoContainer = () => {
   const [priority, setPriority] = useState('')
   
-  // local store
+  //? local store
   // const { todos } = useAppSelector((state) => state.todos);
 
-  // remote api
+  //? remote api
   const { data } = useGetTodosQuery(priority);
   const todos = data?.data;
-
-  console.log(todos);
 
   return (
     <div>

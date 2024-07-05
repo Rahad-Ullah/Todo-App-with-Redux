@@ -44,6 +44,7 @@ const TodoCard = ({
     updateTodo(todoData);
   };
 
+  // delete todo
   const handleDeleteTodo = () => {
     deleteTodo(_id)
   }
